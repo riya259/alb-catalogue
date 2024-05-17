@@ -36,7 +36,6 @@ spec:
           title: Load Balancer Name
           description: The name of the ALB.
           type: string
-          default: my-alb
           ui:options:
             rows: 5
 
