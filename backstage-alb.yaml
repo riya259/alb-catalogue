@@ -1,0 +1,60 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: alb-deployment
+  title: Deploy ALB using CloudFormation
+  description: A template to deploy an ALB using AWS CloudFormation.
+  tags:
+    - aws
+    - alb
+    - cloudformation
+spec:
+  owner: guests
+  type: service
+  parameters:
+    - title: AWS VPC Config
+      properties:
+        vpcId:
+          title: VPC ID
+          description: Enter the VPC id where the ALB will be created.
+          type: string
+          format: aws-vpc-id
+          ui:autofocus: true
+        subnetIds:
+          title: Subnet IDs
+          description: Enter the subnet ids where the ALB will be created.
+          type: array
+          items:
+            type: string
+          minItems: 2
+        securityGroupId:
+          title: Security Group ID
+          description: Enter the security group ID for the ALB.
+          type: string
+          format: aws-sg-id
+        loadBalancerName:
+          title: Load Balancer Name
+          description: The name of the ALB.
+          type: string
+          default: my-alb
+          ui:options:
+            rows: 5
+
+  steps:
+    - id: deploy
+      name: Deploy ALB
+      action: aws:deploy-cloudformation-stack
+      input:
+        region: us-west-1
+        stackName: my-alb-stack
+        templatePath: alb-cft.json
+        parameters:
+          VpcId: ${{ parameters.vpcId }}
+          SubnetIds: ${{ parameters.subnetIds }}
+          SecurityGroupId: ${{ parameters.securityGroupId }}
+          LoadBalancerName: ${{ parameters.loadBalancerName }}
+
+  output:
+    links:
+      - title: ALB DNS Name
+        url: "http://${{ steps.deploy.outputs.LoadBalancerDNSName }}"
