@@ -56,7 +56,7 @@ spec:
       input:
         region: us-west-1
         stackName: my-alb-stack
-        templatePath: alb-cft.json
+        templatePath: ./alb-cft.json
         parameters:
           VpcId: ${{ parameters.vpcId }}
           SubnetIds: ${{ parameters.subnetIds }}
