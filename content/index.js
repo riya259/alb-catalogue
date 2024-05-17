@@ -1,1 +1,1 @@
-console.log('Hey!! ${{ values.name }} instance is getting created. ');
+console.log('Hey!! ALB is getting created. ');
